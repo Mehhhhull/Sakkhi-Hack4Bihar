@@ -1,18 +1,20 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { FiMenu, FiX } from 'react-icons/fi'
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { FiMenu, FiX } from 'react-icons/fi';
+import { useAuth0 } from "@auth0/auth0-react";
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
+  const { loginWithRedirect } = useAuth0();
 
   return (
     <nav className="bg-[#1C1B2E] w-full h-[72px] shadow-lg flex items-center justify-between px-4 md:px-12 fixed top-0 left-0 z-50">
-      {/* Logo and tagline-Sakkhi */}
+      {/* Logo */}
       <Link to="/">
         <span className="font-semibold text-2xl text-[#F9CEDF]">Sakkhi</span>
       </Link>
 
-      {/* Navbar for Desktop specific and here there are links to different pages too */}
+      {/* Desktop Navbar */}
       <div className="hidden md:flex items-center gap-4 lg:gap-6">
         <Link
           to="/suno-khud-ko"
@@ -46,14 +48,14 @@ const Navbar = () => {
         </Link>
       </div>
 
-      {/* Mobile specific navbar */}
+      {/* Mobile Menu Button */}
       <div className="md:hidden">
         <button onClick={() => setIsOpen(!isOpen)} className="text-white text-2xl focus:outline-none">
           {isOpen ? <FiX /> : <FiMenu />}
         </button>
       </div>
 
-      {/* Clicking the navbar opens it and closes it  :Mobile optimized*/}
+      {/* Mobile Menu */}
       {isOpen && (
         <div className="absolute top-16 left-0 w-full bg-[#1C1B2E] flex flex-col items-start px-4 py-4 gap-2 shadow-lg md:hidden z-40">
           <Link
@@ -91,10 +93,19 @@ const Navbar = () => {
           >
             Bharosa Library
           </Link>
+          <button
+            onClick={() => {
+              setIsOpen(false);
+              loginWithRedirect();
+            }}
+            className="text-white hover:text-black hover:bg-pink-200 px-4 py-2 rounded transition w-full text-left"
+          >
+            Log In
+          </button>
         </div>
       )}
     </nav>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;
